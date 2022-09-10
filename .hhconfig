@@ -1,0 +1,8 @@
+assume_php = false
+ignored_paths = [ "vendor/.+/tests/.+", "vendor/hhvm/hhast/.+", "vendor/bin/.+" ]
+disallow_elvis_space = true
+disallow_non_arraykey_keys = true
+disallow_unsafe_comparisons = true
+decl_override_require_hint = true
+disallow_array_literal = true
+disable_static_local_variables = true

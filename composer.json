@@ -1,0 +1,26 @@
+{
+    "name": "vboivin/superglobals",
+    "description": "Type-safe access to php superglobals",
+    "license": "MIT",
+    "keywords": [
+        "type-safe",
+        "superglobals",
+        "hack",
+        "hhvm"
+    ],
+    "homepage": "https://github.com/vboivin/Superglobals",
+    "require": {
+        "hhvm/hsl": "^4.108",
+        "hhvm/hhvm-autoload": "^3.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "hhvm/hhvm-autoload": true
+        }
+    },
+    "require-dev": {
+        "hhvm/hhast": "^4.166",
+        "hhvm/hacktest": "^2.4",
+        "facebook/fbexpect": "^2.9"
+    }
+}

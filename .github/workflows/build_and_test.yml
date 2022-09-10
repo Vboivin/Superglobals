@@ -1,0 +1,19 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    name: HHVM ${{matrix.hhvm}} - ${{matrix.os}}
+    strategy:
+      # Run tests on all OS's and HHVM versions, even if one fails
+      fail-fast: false
+      matrix:
+        os: [ ubuntu ]
+        hhvm:
+          - '4.166'
+          - latest
+          - nightly
+    runs-on: ${{matrix.os}}-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Test and Lint
+        run: ./scripts/ci.sh
