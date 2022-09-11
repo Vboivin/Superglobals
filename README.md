@@ -16,31 +16,29 @@ Class representing all the php superglobals.
 Example of accessing 'REQUEST_METHOD' on $_SERVER:
 
 ```Hack
-use type Superglobals\Globals;
+use type Superglobals\Server;
 
-$server = (new Globals())->SERVER;
-$server::$REQUEST_METHOD; // 'GET', 'HEAD', 'POST', 'PUT', etc. or null
+$server = new Server();
+$server->$REQUEST_METHOD; // 'GET', 'HEAD', 'POST', 'PUT', etc. or null
 ```
 
 Example of using the raw $_SERVER superglobal:
 ```Hack
-use type Superglobals\Globals;
+use type Superglobals\Server;
 
-$server = (new Globals())->SERVER;
-$unsafeServer = $server::_UNSAFE();
+$unsafeServer = Server::_UNSAFE();
 $unsafeServer['REQUEST_METHOD']; // 'GET', 'HEAD', 'PUT', etc. or null
 $unsafeServer['UNKNOWN_VARIABLE']; // Could be anything
 ```
 
 Example of accessing multiple superglobals:
 ```Hack
-use type Superglobals\Globals;
+use type Superglobals\{Get, Post};
 
-$globals = new Globals();
-$get = $globals->GET;
-$post = $globals->POST;
-$get::$queryString; // Do something with the query string.
-$post::$formData; // Do something with the form data.
+$get = new Get();
+$post = new Post();
+$get->$queryString; // Do something with the query string.
+$post->$formData; // Do something with the form data.
 ```
 
 

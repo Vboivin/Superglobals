@@ -1,21 +1,7 @@
 namespace TestUtils;
 use namespace HH\Lib\{Dict};
 
-function global_test_teardown(
-    string $selectedGlobal,
-    string $globalPlaceholder,
-)[globals]: void {
-    \HH\global_set($selectedGlobal, \HH\global_get($globalPlaceholder));
-}
-
-function global_test_setup(
-    string $selectedGlobal,
-    string $globalPlaceholder,
-)[globals]: void {
-    \HH\global_set($globalPlaceholder, \HH\global_get($selectedGlobal));
-}
-
-function modify_global_dict(
+function modify_superglobal(
     string $selectedGlobal,
     dict<arraykey, mixed> $newValues,
 )[globals]: void {
