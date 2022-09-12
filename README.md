@@ -31,14 +31,18 @@ $unsafeServer['REQUEST_METHOD']; // 'GET', 'HEAD', 'PUT', etc. or null
 $unsafeServer['UNKNOWN_VARIABLE']; // Could be anything
 ```
 
-Example of accessing multiple superglobals:
+Example of using $_GET with user defined properties:
 ```Hack
-use type Superglobals\{Get, Post};
+use type Superglobals\{Get, QueryVariable};
 
-$get = new Get();
-$post = new Post();
-$get->$queryString; // Do something with the query string.
-$post->$formData; // Do something with the form data.
+final class PersonQuery {
+    <<QueryVariable>> public ?int $age;
+    <<QueryVariable>> public ?string $name;
+}
+
+$query = new Get<PersonQuery>(PersonQuery::class);
+$query?->data?->age; // Do something with the person's age
+$query?->data?->name; // Do something with the person's name
 ```
 
 

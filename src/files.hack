@@ -10,11 +10,10 @@ use type Superglobals\Internals\{GlobalEnum, Superglobal};
  * https://www.php.net/manual/en/reserved.variables.files.php
  */
 final class Files extends Superglobal {
-    public ?dict<arraykey, mixed> $uploadedFiles;
-
-    public function __construct()[globals]: void {
-        $this->uploadedFiles = self::_UNSAFE() as ?dict<_, _>;
-    }
+    public function __construct(
+        public ?dict<arraykey, mixed> $uploadedFiles = self::_UNSAFE()
+            as dict<_, _>,
+    )[globals]: void {}
 
     /**
     * Escape hatch available while using Files::_UNSAFE().

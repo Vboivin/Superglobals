@@ -11,11 +11,9 @@ use type Superglobals\Internals\{GlobalEnum, Superglobal};
  * https://www.php.net/manual/en/reserved.variables.post.php
  */
 final class Post extends Superglobal {
-    public ?dict<arraykey, mixed> $formData;
-
-    public function __construct()[globals]: void {
-        $this->formData = self::_UNSAFE() as ?dict<_, _>;
-    }
+    public function __construct(
+        public ?dict<arraykey, mixed> $data = self::_UNSAFE() as dict<_, _>,
+    )[globals]: void {}
 
     /**
     * Escape hatch available while using Post::_UNSAFE().

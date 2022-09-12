@@ -10,11 +10,9 @@ use type Superglobals\Internals\{GlobalEnum, Superglobal};
  * https://www.php.net/manual/en/reserved.variables.cookies.php
  */
 final class Cookie extends Superglobal {
-    public ?dict<arraykey, mixed> $cookies;
-
-    public function __construct()[globals]: void {
-        $this->cookies = self::_UNSAFE() as ?dict<_, _>;
-    }
+    public function __construct(
+        public ?dict<arraykey, mixed> $cookies = self::_UNSAFE() as dict<_, _>,
+    )[globals]: void {}
 
     /**
     * Escape hatch available while using Cookie::_UNSAFE().
