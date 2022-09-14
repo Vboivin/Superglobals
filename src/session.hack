@@ -9,10 +9,17 @@ use type Superglobals\Internals\{GlobalEnum, Superglobal};
  *
  * https://www.php.net/manual/en/reserved.variables.session.php
  */
-final class Session extends Superglobal {
+final class Session<T> extends Superglobal<T> {
     public function __construct(
-        public ?dict<arraykey, mixed> $data = self::_UNSAFE() as dict<_, _>,
-    )[globals]: void {}
+        private classname<T> $_classname,
+        public ?T $data = null,
+    )[globals, rx_local]: void {
+        $this->data = $this->getDataForObject(
+            $this->_classname,
+            SessionData::class,
+            SessionVariable::class,
+        );
+    }
 
     /**
     * Escape hatch available while using Session::_UNSAFE().
@@ -24,7 +31,10 @@ final class Session extends Superglobal {
     * You can also use HH\global_get('_SESSION') as an alternative.
     */
     <<__Override>>
-    public static function _UNSAFE()[globals]: mixed {
-        return \HH\global_get(GlobalEnum::SESSION);
+    public static function _UNSAFE()[globals]: ?dict<arraykey, mixed> {
+        return \HH\global_get(GlobalEnum::SESSION) as ?dict<_, _>;
     }
 }
+
+final class SessionData implements \HH\ClassAttribute {}
+final class SessionVariable implements \HH\InstancePropertyAttribute {}

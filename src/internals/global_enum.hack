@@ -5,7 +5,6 @@ enum GlobalEnum: string as string {
     GET = '_GET';
     POST = '_POST';
     FILES = '_FILES';
-    REQUEST = '_REQUEST';
     SESSION = '_SESSION';
     COOKIE = '_COOKIE';
 }

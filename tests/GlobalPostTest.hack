@@ -1,35 +1,35 @@
-use type Superglobals\Post;
+use type Superglobals\{Form, FormVariable, Post, SuperglobalException};
 use type Superglobals\Internals\{GlobalEnum};
-use function TestUtils\{
-    get_provider_multiple_args,
-    get_provider_single_arg,
-    modify_superglobal,
-};
-use namespace HH\Lib\{Dict};
-use type Facebook\HackTest\{DataProvider, HackTest};
+use function TestUtils\{modify_superglobal};
+use type Facebook\HackTest\{HackTest};
 use function Facebook\FBExpect\expect;
 
+<<Form>>
+final class TestFormData {
+    <<FormVariable>> public ?string $name;
+    <<FormVariable>> public ?string $email;
+    <<FormVariable>> public ?int $age;
+}
+
+final class InvalidFormClass {}
+
 final class GlobalPostTest extends HackTest {
-    public function formDataProviderSingleArg(): vec<(arraykey, mixed)> {
-        return get_provider_single_arg();
+    public function testInvalidFormClass(): void {
+        expect(() ==> new Post(InvalidFormClass::class))->toThrow(
+            SuperglobalException::class,
+        );
     }
 
-    public function formDataProviderMultipleArgs(
-    ): vec<vec<(arraykey, mixed)>> {
-        return get_provider_multiple_args();
-    }
-
-    <<DataProvider('formDataProviderSingleArg')>>
-    public function testFormDataSingleArg(arraykey $key, mixed $value): void {
-        modify_superglobal(GlobalEnum::POST, dict[$key => $value]);
-        $p = new Post();
-        expect($p->data)->toBeSame(Post::_UNSAFE());
-    }
-
-    <<DataProvider('formDataProviderMultipleArgs')>>
-    public function testFormDataMultipleArgs((arraykey, mixed) ...$args): void {
-        modify_superglobal(GlobalEnum::POST, Dict\from_entries($args));
-        $p = new Post();
-        expect($p->data)->toBeSame(Post::_UNSAFE());
+    public function testFormData(): void {
+        modify_superglobal(GlobalEnum::POST, dict<arraykey, mixed>[
+            'name' => 'foo',
+            'email' => 'bar@baz.com',
+            'age' => 99,
+        ]);
+        $form = new Post(TestFormData::class);
+        $unsafePost = Post::_UNSAFE() as nonnull;
+        expect($form?->data?->name)->toBeSame($unsafePost['name']);
+        expect($form?->data?->email)->toBeSame($unsafePost['email']);
+        expect($form?->data?->age)->toBeSame($unsafePost['age']);
     }
 }

@@ -13,7 +13,7 @@ use type Superglobals\Internals\{GlobalEnum, Superglobal};
  *
  * https://www.php.net/manual/en/reserved.variables.server.php
  */
-final class Server extends Superglobal {
+final class Server extends Superglobal<nothing> {
     /**
      * The filename of the currently executing script, relative to the document
      * root. For instance, $_SERVER['PHP_SELF'] in a script at the address

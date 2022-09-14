@@ -10,10 +10,17 @@ use type Superglobals\Internals\{GlobalEnum, Superglobal};
  *
  * https://www.php.net/manual/en/reserved.variables.post.php
  */
-final class Post extends Superglobal {
+final class Post<T> extends Superglobal<T> {
     public function __construct(
-        public ?dict<arraykey, mixed> $data = self::_UNSAFE() as dict<_, _>,
-    )[globals]: void {}
+        private classname<T> $_classname,
+        public ?T $data = null,
+    )[globals, rx_local]: void {
+        $this->data = $this->getDataForObject(
+            $this->_classname,
+            Form::class,
+            FormVariable::class,
+        );
+    }
 
     /**
     * Escape hatch available while using Post::_UNSAFE().
@@ -25,7 +32,10 @@ final class Post extends Superglobal {
     * You can also use HH\global_get('_POST') as an alternative.
     */
     <<__Override>>
-    public static function _UNSAFE()[globals]: mixed {
-        return \HH\global_get(GlobalEnum::POST);
+    public static function _UNSAFE()[globals]: ?dict<arraykey, mixed> {
+        return \HH\global_get(GlobalEnum::POST) as ?dict<_, _>;
     }
 }
+
+final class Form implements \HH\ClassAttribute {}
+final class FormVariable implements \HH\InstancePropertyAttribute {}

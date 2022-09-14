@@ -9,10 +9,17 @@ use type Superglobals\Internals\{GlobalEnum, Superglobal};
  *
  * https://www.php.net/manual/en/reserved.variables.cookies.php
  */
-final class Cookie extends Superglobal {
+final class Cookies<T> extends Superglobal<T> {
     public function __construct(
-        public ?dict<arraykey, mixed> $cookies = self::_UNSAFE() as dict<_, _>,
-    )[globals]: void {}
+        private classname<T> $_classname,
+        public ?T $data = null,
+    )[globals, rx_local]: void {
+        $this->data = $this->getDataForObject(
+            $this->_classname,
+            CookiesData::class,
+            Cookie::class,
+        );
+    }
 
     /**
     * Escape hatch available while using Cookie::_UNSAFE().
@@ -24,7 +31,10 @@ final class Cookie extends Superglobal {
     * You can also use HH\global_get('_COOKIE') as an alternative.
     */
     <<__Override>>
-    public static function _UNSAFE()[globals]: mixed {
-        return \HH\global_get(GlobalEnum::COOKIE);
+    public static function _UNSAFE()[globals]: ?dict<arraykey, mixed> {
+        return \HH\global_get(GlobalEnum::COOKIE) as ?dict<_, _>;
     }
 }
+
+final class CookiesData implements \HH\ClassAttribute {}
+final class Cookie implements \HH\InstancePropertyAttribute {}
