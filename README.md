@@ -121,14 +121,14 @@ use type Superglobals\{Form, FormVariable, Post};
 
 // INVALID CODE
 final class InvalidSignupForm {
-    <<FormData>> public ?string $name;
+    <<FormVariable>> public ?string $name;
 }
 $invalidForm = new Post(InvalidSignupForm::class); // An exception will be thrown here
 
 // VALID CODE
 <<Form>>
 final class ValidSignupForm {
-    <<FormData>> public ?string $name;
+    <<FormVariable>> public ?string $name;
 }
 $validForm = new Post(ValidSignupForm::class); // No exception thrown here
 ```
